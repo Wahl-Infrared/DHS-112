@@ -3,22 +3,21 @@
 
 #include "stdbool.h"
 
-#define CURVE_ARRAY_SIZE 32
-#define TEMP_ARRAY_SIZE 8
+#define THERMOPILE_SUM_COUNT 64
+#define THERMISTOR_SUM_COUNT 32
+
 #define MAX_HI_TEMP 3000
 #define MIN_LO_TEMP -500
 #define CAL_2_TEMP 1000    /*100 ¡æ*/
 #define MAX_TEMP 3000
 #define MIN_TEMP -500
 
-typedef struct _ST_TEMP_SENSOR_{
-  unsigned int therm_value[TEMP_ARRAY_SIZE];
-  unsigned int env_value[TEMP_ARRAY_SIZE];
-  unsigned char therm_array_offset;
-  unsigned char env_array_offset;
-  unsigned char therm_value_flag:1;
-  unsigned char env_value_flag:1;
-}ST_TEMP_SENSOR;
+typedef struct _ST_THERM_SENSOR_{
+  unsigned long thermopile_sum_value;
+  unsigned long thermistor_sum_value;
+  unsigned char thermopile_value_count;
+  unsigned char thermistor_value_count;
+}ST_THERM_SENSOR;
 
 typedef struct _ST_TEMP_VAL_{
   unsigned int therm_value[TEMP_ARRAY_SIZE];
@@ -60,8 +59,7 @@ extern const TEMP_CURVE curve[CURVE_ARRAY_SIZE];
 
 void set_default_cal_param(void);
 void calc_temp_process(void);
-void AD_init(void);
-void temp_detect_start(bool on);
+void SD16_init(void);
 void read_therm_temp(void);
 void cal_process(void);
 
