@@ -103,8 +103,8 @@ __interrupt void UART_RX (void)
 //  RxFlag=1;
   /*在这里添加用户中断服务程序代码，如将数据压入接收缓冲等*/
   
-  int a;
-  a = U0RXBUF;
+
+
 //  LCD_main_display(a,0);
   //__low_power_mode_off_on_exit();
 }

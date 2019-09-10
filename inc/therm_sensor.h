@@ -19,31 +19,20 @@ typedef struct _ST_THERM_SENSOR_{
   unsigned char thermistor_value_count;
 }ST_THERM_SENSOR;
 
-typedef struct _ST_TEMP_VAL_{
-  unsigned int therm_value[TEMP_ARRAY_SIZE];
-  unsigned int env_value[TEMP_ARRAY_SIZE];
-  unsigned int therm_avg;
-  unsigned int env_avg;
-  unsigned int therm_max;
-  unsigned int env_max;
-  unsigned char value_offset;
-}ST_TEMP_VAL;
-
 typedef struct _ST_TEMP_RESULT_{
   int therm_temp;
   int env_temp;
   int max_temp;
   int min_temp;
+  int thermopile;
+  int thermistor;
+  int max_thermopile;
 }ST_TEMP_RESULT,*PST_TEMP_RESULT;
 
 typedef struct _CAL_PARAM_{
-  unsigned int R_env_pullup;
-  unsigned int env_val_1;
-  unsigned int env_val_2;
-  unsigned int therm_basic;
-  int env_tem_1;
-  int env_tem_2;
-  float therm_corr;
+  float R_env_pullup;
+  float gain;
+  unsigned int basic_SD16_val;
 }CAL_PARAM, *PCAL_PARAM;
 
 typedef struct _TEMP_CURVE_{
@@ -52,15 +41,14 @@ typedef struct _TEMP_CURVE_{
 }TEMP_CURVE, *PTEMP_CURVE;
 
 extern ST_TEMP_RESULT g_temp_result;
-extern ST_TEMP_VAL therm_val;
-extern ST_TEMP_SENSOR therm_sensor;    /*  should be delete in stable version*/
+extern ST_THERM_SENSOR therm_sensor;    /*  should be delete in stable version*/
 extern PCAL_PARAM p_cal_param;
-extern const TEMP_CURVE curve[CURVE_ARRAY_SIZE];
 
 void set_default_cal_param(void);
-void calc_temp_process(void);
 void SD16_init(void);
-void read_therm_temp(void);
+unsigned int read_thermopile_value();
+unsigned int read_thermistor_value();
+int get_object_temp();
 void cal_process(void);
 
 #endif

@@ -220,16 +220,16 @@ RE_FLUSH:
 
 
   switch(sys_cur_state){
-    case SYS_STATE_READ_ENV_TEMP:
+    case SYS_STATE_DISP_ENV:
       main_disp_temp(g_temp_result.env_temp);
       break;
-    case SYS_STATE_READ_THERM:
-      LCD_main_display(therm_val.therm_avg/1000,0);
-      LCD_slave_display(therm_val.therm_avg%1000,0);
+    case SYS_STATE_DISP_THERMOPILE:
+      LCD_main_display(g_temp_result.thermopile/1000,0);
+      LCD_slave_display(g_temp_result.thermopile%1000,0);
       break;
-    case SYS_STATE_READ_ENV:
-      LCD_main_display(therm_val.env_avg/1000,0);
-      LCD_slave_display(therm_val.env_avg%1000,0);
+    case SYS_STATE_DISP_THERMISTOR:
+      LCD_main_display(g_temp_result.thermistor/1000,0);
+      LCD_slave_display(g_temp_result.thermistor%1000,0);
       break;
     case SYS_STATE_RUN:
       main_disp_temp(g_temp_result.therm_temp);
@@ -311,9 +311,9 @@ RE_FLUSH:
 
 void sys_event_handler(unsigned char event)
 {
-  int delta_temp;
-  int delta_cal_therm;
-  int delta_dtc_therm;
+//  int delta_temp;
+//  int delta_cal_therm;
+//  int delta_dtc_therm;
 
   switch(event){
     case SYS_EVENT_BUTTON_MENU:
@@ -337,18 +337,18 @@ void sys_event_handler(unsigned char event)
           sys_new_state = SYS_STATE_SET_EMS;
           break;
         case SYS_STATE_CAL_1:
-          p_cal_param->therm_basic= therm_val.therm_max;
-          p_cal_param->env_tem_1 = g_temp_result.therm_temp;
-          p_cal_param->env_val_1 = therm_val.env_avg;
+          p_cal_param->basic_SD16_val= g_temp_result.max_thermopile;
+//          p_cal_param->gain= g_temp_result.therm_temp;
+ //         p_cal_param->env_val_1 = therm_val.env_avg;
           flash_write_cal_param();
           sys_new_state = SYS_STATE_CAL_2;
           break;
         case SYS_STATE_CAL_2:
-          delta_temp = CAL_2_TEMP - g_temp_result.env_temp;// - g_temp_result.max_temp;
-          delta_cal_therm = delta_temp_2_value(delta_temp);
-          delta_dtc_therm = therm_val.therm_max - p_cal_param->therm_basic;
-          delta_dtc_therm = delta_dtc_therm/(p_system_setting->ems/100.0);
-          p_cal_param->therm_corr = delta_cal_therm * 1.0 / delta_dtc_therm;
+  //        delta_temp = CAL_2_TEMP - g_temp_result.env_temp;// - g_temp_result.max_temp;
+//          delta_cal_therm = delta_temp_2_value(delta_temp);
+//          delta_dtc_therm = therm_val.therm_max - p_cal_param->therm_basic;
+//          delta_dtc_therm = delta_dtc_therm/(p_system_setting->ems/100.0);
+//          p_cal_param->therm_corr = delta_cal_therm * 1.0 / delta_dtc_therm;
           flash_write_cal_param();
           sys_new_state = SYS_STATE_CAL_3;
           break;

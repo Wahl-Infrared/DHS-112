@@ -58,25 +58,27 @@ int main( void )
   }
 
    /*≥ı ºªØ UART*/
-  UART_Init(4800,'n',8,1);
-  
+//  UART_Init(4800,'n',8,1);
+
+sys_new_state = SYS_STATE_DISP_THERMOPILE;
+
+while(1){
+      g_temp_result.thermopile = read_thermopile_value();
+      flush_LCD_disp();
+}  
   while(1){
     if(P1IN_bit.P7 == 0){
       if(sys_cur_state != SYS_STATE_RUN){
         sys_new_state = SYS_STATE_RUN;
-//      if(sys_cur_state != SYS_STATE_READ_ENV_TEMP){
+//        if(sys_cur_state != SYS_STATE_READ_ENV_TEMP){
 //        sys_new_state = SYS_STATE_READ_ENV_TEMP; 
         g_temp_result.max_temp = MIN_TEMP;
         g_temp_result.min_temp = MAX_TEMP;
         hold_count = 0;
         flush_LCD_disp();
       }
-      read_therm_value();
-      
-      calc_temp();
+      g_temp_result.therm_temp = get_object_temp();
       flush_LCD_disp();
-
-      
     }else{
       if(sys_cur_state == SYS_STATE_RUN){
         sys_new_state = SYS_STATE_HOLD;
