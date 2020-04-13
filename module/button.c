@@ -7,6 +7,7 @@
 #define MENU_MASK 0x0c
 #define UP_MASK 0x04
 #define DOWN_MASK 0x08
+#define POWER_MASK 0x80
 
 typedef struct _ST_BUTTON_{
 	union{
@@ -66,7 +67,16 @@ void button_state_inc(unsigned char *state)
 
 void button_timer_handle(u8 mask)
 {
-	if(button.button_mask_bit.menu){
+  if(button.button_mask_bit.power){
+    if(!(mask & POWER_MASK)){
+      if(get_sys_state() != SYS_STATE_RUN){
+       set_sys_state(SYS_STATE_RUN);
+      }
+    }else{
+     set_sys_state(SYS_STATE_HOLD);
+     button.button_mask_bit.power = 0;
+    }     
+  }else if(button.button_mask_bit.menu){
 		if(!(mask & MENU_MASK)){
 			button.menu_state = BUTTON_STATE_CLICK;
 			set_sys_state(SYS_STATE_SET_PROCESS);
@@ -100,7 +110,9 @@ void button_timer_handle(u8 mask)
 
 void button_pressed_handle(unsigned char mask)
 {
-  if(!(mask & MENU_MASK)){
+  if(!(mask & POWER_MASK)){
+    button.button_mask_bit.power = 1;
+  }else if(!(mask & MENU_MASK)){
     button.button_mask_bit.menu = 1;
   }else if(!(mask & UP_MASK)){
     button.button_mask_bit.up = 1;

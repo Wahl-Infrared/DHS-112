@@ -17,8 +17,8 @@ void gpio_init(void)
 {
   P1DIR = 0x03;
   P1OUT = 0x00;
-  P1IES = 0x0C;
-  P1IE = 0x0C;
+  P1IES = 0x8C;
+  P1IE  = 0x8C;
   P2DIR = 0x11;
   P2OUT = 0x11;
   P2SEL = 0x00;
