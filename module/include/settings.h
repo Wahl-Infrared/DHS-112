@@ -30,10 +30,10 @@ typedef struct _SETTING_{
       u8 light    :1;
      }flags_bit;
   };
-}SETTING, *PSETTING;
+}SETTING, *P_SETTING;
 
 
-extern PSETTING p_setting;
+extern P_SETTING p_setting;
 
 void settings_init();
 void save_settings();

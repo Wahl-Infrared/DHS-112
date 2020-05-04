@@ -1,34 +1,14 @@
-#include "io430.h"
+#include "driver.h"
 #include "display.h"
-#include "gpio.h"
-#include "sd16.h"
-#include "basic_timer.h"
 #include "common.h"
 #include "settings.h"
 #include "button.h"
+#include "cal.h"
 
-
-/*
-#include "uart.h"
-#include "therm_sensor.h"
-#include "gpio.h"
-#include "system.h"
-#include "stdio.h"
-#include "flash.h"
-*/
-
-#define CONFIG_TEST
-#ifdef CONFIG_TEST
-#include "test/button_test.c"
-#include "test/BT_test.c"
-#include "test/sd16_test.c"
-
+#define TEST
+#ifdef TEST
+#include "test.h"
 #endif
-
-void WDT_Init()
-{
-  WDTCTL = WDTPW +WDTHOLD;                  // Stop Watchdog Timer
-}
 
 /* 系统时钟设定
  * ACLK �?2768�?外接晶振
@@ -45,14 +25,11 @@ void CLK_Init()
 int main( void )
 {
 //  unsigned int hold_count;
-  WDT_Init();
-  CLK_Init();
-  BT_Init();
-  gpio_init();
-  timer_A_init(); 
-  LCD_Init();
-  SD16_init();
+  driver_init();
+  button_init();
   settings_init();
+  cal_init();
+
   
   /*初始�?AD 转换*/
 //  therm_init();
@@ -69,9 +46,17 @@ int main( void )
 
 	__enable_interrupt();
 	
-  button_init();
 
-while(1){
-  sys_process();
+
+//  thermistor_test();
+//  temp_env_test();
+
+//cal_process();
+  env_test_process();
+
+  if(cal_check() == 1){
+    cal_process();
+  }else{
+    sys_process();
   }
 }

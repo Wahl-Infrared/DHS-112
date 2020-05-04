@@ -69,19 +69,18 @@ void button_timer_handle(u8 mask)
 {
   if(button.button_mask_bit.power){
     if(!(mask & POWER_MASK)){
-      if(get_sys_state() != SYS_STATE_RUN){
-       set_sys_state(SYS_STATE_RUN);
-      }
+      button_state_inc(&(button.power_state));
     }else{
-     set_sys_state(SYS_STATE_HOLD);
+     button.power_state = BUTTON_STATE_INIT;
      button.button_mask_bit.power = 0;
     }     
   }else if(button.button_mask_bit.menu){
 		if(!(mask & MENU_MASK)){
-			button.menu_state = BUTTON_STATE_CLICK;
-			set_sys_state(SYS_STATE_SET_PROCESS);
-		}
-		button.button_mask_bit.menu = 0;
+		  button_state_inc(&(button.menu_state));
+		}else{
+		 button.menu_state = BUTTON_STATE_INIT;
+     button.button_mask_bit.menu = 0;
+    }
 	}else if(button.button_mask_bit.up){
 		if(!(mask & UP_MASK)){
 			button_state_inc(&(button.up_state));

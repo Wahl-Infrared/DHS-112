@@ -4,24 +4,17 @@
 #include "system.h"
 #include "settings.h"
 
-#define   SETTING_ADDR  (0x1000)
-#define   SETTING_BAK_ADDR  (0x1080)
-#define   MAX_SETTING_SIZE  (64)
-
-
 //#define   FLASH_CAL_ADDR  (0x1040)
 //#define   FLASH_CAL_COPY_ADDR  (0x10C0)
 
 SETTING settings;
-PSETTING p_setting = &settings;
+P_SETTING p_setting = &settings;
 
 void settings_init()
 {
   u8 buff[MAX_SETTING_SIZE];
   u8 crc;
   u8 len = sizeof(SETTING);
-
-  flash_init();
 
   /* 读取主区数据，并校验CRC，成功直接返�?*/
   if(read_flash(SETTING_ADDR, buff, len+1) == 0){

@@ -44,9 +44,34 @@ void display_EMS(u8 ems)
 	LCD_EMS_display(ems);
 }
 
-void display_run_page(u8 ems, bool cf, bool min)
+void display_cal_records(u8 step)
+{
+  LCD_main_display(step, 0);
+}
+
+void display_run_page(u8 ems, u8 cf, u8 min)
 {
   LCD_Clear();
+  LCD_flag_display(LCD_FLAG_EMS_FLAG, 1);
+  LCD_flag_display(LCD_FLAG_EMS_DOT, 1);
+  LCD_flag_display(LCD_FLAG_EMS_EQU, 1);
+  LCD_EMS_display(ems);
+  if(cf){
+    LCD_flag_display(LCD_FLAG_TEMP_F, 1);
+  }else{
+    LCD_flag_display(LCD_FLAG_TEMP_C, 1);
+  }
+  if(min){
+    LCD_flag_display(LCD_FLAG_MIN, 1);
+  }else{
+    LCD_flag_display(LCD_FLAG_MAX, 1);
+  }
+}
+
+void display_cal_run_page(u8 ems, u8 cf, u8 min)
+{
+  LCD_Clear();
+  LCD_flag_display(LCD_FLAG_MEM, 1);
   LCD_flag_display(LCD_FLAG_EMS_FLAG, 1);
   LCD_flag_display(LCD_FLAG_EMS_DOT, 1);
   LCD_flag_display(LCD_FLAG_EMS_EQU, 1);
@@ -135,4 +160,9 @@ void display_min_flag(u8 min)
 void display_hold_flag()
 {
   LCD_flag_display(LCD_FLAG_HOLD, 1);
+}
+
+void clear_hold_flag()
+{
+  LCD_flag_display(LCD_FLAG_HOLD, 0);
 }

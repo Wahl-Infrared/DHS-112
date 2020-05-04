@@ -3,6 +3,12 @@
 
 #include "common.h"
 
+#define LASER_CTL P1OUT_bit.P0
+#define LIGHT_CTL P1OUT_bit.P1
+#define BELL_CTL P2OUT_bit.P2
+#define CAL_CHECK_OUT P2OUT_bit.P4
+#define CAL_CHECK_IN P2IN_bit.P5
+
 enum BUTTON_STATE{
 	BUTTON_STATE_INIT,
   BUTTON_STATE_CLICK,
@@ -29,5 +35,7 @@ enum BUTTON_NAME{
 int is_button_pressed(void);
 u8 get_button_state(u8 button);
 void set_button_state(u8 button, u8 state);
+void button_init(void);
+
 
 #endif

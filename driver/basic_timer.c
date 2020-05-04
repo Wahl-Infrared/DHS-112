@@ -14,7 +14,7 @@ struct time_val system_tv;
  * BTFRFQx = 01, fLCD = 512Hz
  *
  * 开启中断， 1s进入一次，提供1s时钟，用于计时功�?*/
-void BT_Init()
+void bt_init()
 {
   BTCTL = BT_fLCD_DIV64 + BT_ADLY_1000;
   IE2 |= BTIE;                                  //开启basic timer 中断

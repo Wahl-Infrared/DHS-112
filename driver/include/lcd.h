@@ -119,6 +119,7 @@ extern ST_LCD g_lcd;
 
 void LCD_Init(void);
 void LCD_Clear(void);
+void LCD_blink(void);
 void LCD_main_display(int number, bool DOT);
 void LCD_slave_display(int number, bool DOT);
 void LCD_EMS_display(unsigned int number);

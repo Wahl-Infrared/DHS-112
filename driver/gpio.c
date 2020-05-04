@@ -2,10 +2,6 @@
 #include "gpio.h"
 #include "common.h"
 
-#define LASER_CTL P1OUT_bit.P0
-#define LIGHT_CTL P1OUT_bit.P1
-#define BELL_CTL P2OUT_bit.P2
-
 /*****************************************************
 * �?   称：gpio_init()
 * �?   能：初始化GPIO

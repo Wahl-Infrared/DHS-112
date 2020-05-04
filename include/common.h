@@ -1,9 +1,10 @@
 #ifndef _COMMON_H_
 #define _COMMON_H_
 
+#include "io430.h"
+
 #define true 1
 #define false 0
-#define NULL 0
 
 #define CPU_F ((double)1000000)
 #define delay_us(x) __delay_cycles((long)(CPU_F*(double)x/1000000.0))
